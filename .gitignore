@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environments
+scenic_env/
+scenic_linux/
+pyscenic_env/
+.env/
+
+# Large analysis files
+*.h5ad
+*.loom
+
+# GEO downloads
+*.tar
+*.gz
+
+# Raw data
+data/raw/
+
+# Large processed files
+data/processed/
+
+# pySCENIC databases
+resources/databases/
+resources/annotations/
+
+# Jupyter
+.ipynb_checkpoints/
