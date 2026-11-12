@@ -1,8 +1,3 @@
-import scanpy as sc
-import pandas as pd
-
-print("Loading filtered data...")
-
 adata = sc.read_h5ad(
     "data/processed/gbm_filtered.h5ad"
 )
