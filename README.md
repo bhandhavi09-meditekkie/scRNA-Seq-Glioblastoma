@@ -1,512 +1,120 @@
-scRNA-Seq Glioblastoma Analysis using pySCENIC
+Identification and Analysis of Transcription Factor Regulatory Networks in Glioblastoma Using SCENIC
+Project overview
+This project applies the SCENIC workflow to a single-cell RNA-sequencing expression matrix derived from the glioblastoma dataset GSE131928 to infer candidate transcription factor (TF)-target regulatory relationships and assess regulon activity across cells.
 
-Project Overview
-
-This project applies the pySCENIC workflow to a publicly available glioblastoma single-cell RNA sequencing (scRNA-seq) dataset to infer gene regulatory networks and identify key transcription factors involved in glioblastoma cellular states and regulatory programs.
-
-
-
+The analysis is intended to investigate transcriptional regulatory programmes associated with glioblastoma cellular heterogeneity.
+Research question
+Can transcription-factor regulatory network inference from single-cell RNA-sequencing data identify candidate regulatory programmes that may help characterise cellular heterogeneity in glioblastoma?
 Dataset
+- Dataset: GSE131928
+- Study: Neftel et al. (2019), An Integrative Model of Cellular States, Plasticity, and Genetics for Glioblastoma
+- GEO record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131928
+- Expression matrix used in this project: gbm_expression_matrix.tsv
+- Reported matrix dimensions: 7,930 cells × 22,197 genes
+- Important: This is the project’s selected subset/matrix, not the full cell count of the original GEO study.
+Workflow
+1. Prepare the gene-expression matrix and select highly variable genes (HVGs).
+2. Infer candidate TF-target relationships using GRNBoost2.
+3. Refine candidate regulons using cisTarget motif-enrichment analysis.
+4. Calculate regulon activity across cells using AUCell.
+5. Rank and biologically interpret selected TF-labelled entries using relevant literature.
+SCENIC stages
+- GRNBoost2: Infers candidate TF-target relationships from expression patterns.
+- cisTarget: Uses motif enrichment to refine candidate TF-target relationships into regulons.
+- AUCell: Estimates the enrichment/activity of regulon target genes among highly expressed genes in individual cells.
+These are computational inferences. Motif enrichment and AUCell scores do not, by themselves, prove direct TF binding or causal regulation.
+Reported results
+The following 20 TF-labelled entries and scores were reported:
+TF-labelled entry	Reported score
+SOX4(+)	0.173455
+HES6(+)	0.141375
+NFIL3(+)	0.085255
+MAFB(+)	0.075977
+JUN(+)	0.073063
+STAT1(+)	0.065558
+ZNF671(+)	0.062062
+IRF1(+)	0.061367
+GSX1(+)	0.057273
+ATF3(+)	0.053751
+DLX5(+)	0.053173
+ZNF208(+)	0.051650
+BHLHE40(+)	0.051286
+NEUROD1(+)	0.048881
+OTX2(+)	0.046082
+DLX2(+)	0.045098
+KLF4(+)	0.044453
+EPAS1(+)	0.043626
+GLI1(+)	0.042237
+ZNF782(+)	0.041086
 
-GEO Accession
 
-GSE131928
+Score-metric caveat: The source file and column name for this score list must be recorded before interpreting the values as AUCell activity, regulon specificity, GRNBoost2 importance, or another metric.
+Preliminary interpretation
+SOX4 and HES6 have the two highest reported scores. SOX4 is particularly interesting in light of the GBM cellular-state framework described by Neftel et al. (2019), which includes neural progenitor-like (NPC-like) malignant cell states. HES6 has also been investigated in glioma proliferation.
 
+Other TFs suggest hypotheses for further investigation:
+- JUN and ATF3: stress-responsive and adaptive transcriptional programmes.
+- STAT1 and IRF1: interferon/cytokine-associated programmes.
+- MAFB: potentially myeloid/macrophage-associated regulation.
+- DLX5, DLX2, NEUROD1 and GSX1: neural developmental or lineage-associated programmes.
+- EPAS1: hypoxia-associated transcriptional regulation.
+- GLI1: Hedgehog pathway-associated transcriptional regulation.
+  
+Reproducibility: example commands
+The commands below reflect the reported project workflow. 
+# GRNBoost2 network inference
+pyscenic grn \
+  data/processed/gbm_hvg_5000.tsv \
+  resources/tf_lists/allTFs_hg38.txt \
+  --method grnboost2 \
+  --output results/grnboost2/grnboost2_network.csv \
+  --num_workers 8
 
+# cisTarget regulon refinement
+pyscenic ctx \
+  results/grnboost2/grnboost2_network.csv \
+  resources/databases/hg38__refseq-r80__10kb_up_and_down_tss.mc9nr.genes_vs_motifs.rankings.feather \
+  --annotations_fname resources/annotations/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl.txt \
+  --expression_mtx_fname data/processed/gbm_hvg_5000.tsv \
+  --output results/regulons/regulons.csv \
+  --num_workers 8
 
-Publication:
+# AUCell regulon activity scoring
+pyscenic aucell \
+  data/processed/gbm_hvg_5000.tsv \
+  results/regulons/regulons.csv \
+  --output results/aucell/aucell_scores.csv \
+  --num_workers 2
+Check pyscenic grn --help, pyscenic ctx --help, and pyscenic aucell --help for syntax supported by the installed pySCENIC version. The TF list and database must match the organism/genome build and gene identifiers in the expression matrix.
+Resources
+- SCENIC paper: Aibar et al. (2017), SCENIC: single-cell regulatory network inference and clustering. https://doi.org/10.1038/nmeth.4463
+- Glioblastoma dataset paper: Neftel et al. (2019), An Integrative Model of Cellular States, Plasticity, and Genetics for Glioblastoma. https://doi.org/10.1016/j.cell.2019.06.024
+- GEO dataset: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131928
+- cisTarget resources: https://resources.aertslab.org/cistarget/
+- Human TF list: https://resources.aertslab.org/cistarget/tf_lists/allTFs_hg38.txt
+Limitations and next steps
+1. Record the exact origin and meaning of the reported score column.
+2. Examine regulon target-gene counts and the target genes for the top TFs.
+3. Map AUCell activity to cell-type and malignant-cell-state annotations.
+4. Check whether immune-associated TFs (for example, MAFB, STAT1 and IRF1) arise from non-malignant populations.
 
-
-
-Neftel C. et al. (2019)
-
-An Integrative Model of Cellular States, Plasticity, and Genetics for Glioblastoma
-
-Cell
-
-
-
-Dataset Link:
-
-
-
-https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131928
-
-
-
-Selected Dataset
-
-Sample Used
-
-GSM3828672\_Smartseq2\_GBM\_IDHwt\_processed\_TPM.tsv
-
-Reason for Selection
-
-Human glioblastoma dataset
-
-Smart-seq2 sequencing platform
-
-Suitable size for local computation
-
-Different from datasets used in the original SCENIC tutorial
-
-Appropriate for identifying glioblastoma-specific transcriptional regulators
-
-Project Structure
-
-scRNA-Seq-Glioblastoma/
-
-│
-
-├── data/
-
-│   ├── raw/
-
-│   └── processed/
-
-│
-
-├── resources/
-
-│   ├── databases/
-
-│   ├── annotations/
-
-│   └── allTFs\_hg38.txt
-
-│
-
-├── scripts/
-
-│
-
-├── notebooks/
-
-│
-
-├── results/
-
-│   ├── grnboost2/
-
-│   ├── regulons/
-
-│   ├── aucell/
-
-│   └── figures/
-
-│
-
-├── docs/
-
-│
-
+Suggested repository structure
+project/
 ├── README.md
-
-└── requirements.txt
-
-Environment Setup
-
-Create Environment
-
-conda create -n pyscenic\_env python=3.10
-
-conda activate pyscenic\_env
-
-Major Packages
-
-pandas
-
-numpy
-
-scanpy
-
-anndata
-
-matplotlib
-
-seaborn
-
-scikit-learn
-
-pyscenic
-
-arboreto
-
-Dataset Inspection
-
-Original Dataset Dimensions
-
-Genes : 23,686
-
-Cells : 7,930
-
-Missing Values : 0
-
-Data Format
-
-Rows    = Genes
-
-Columns = Cells
-
-Values  = TPM Expression
-
-Data Preprocessing
-
-Quality Filtering
-
-Filtering criteria:
-
-
-
-sc.pp.filter\_cells(adata, min\_genes=200)
-
-sc.pp.filter\_genes(adata, min\_cells=3)
-
-Results
-
-Original Matrix
-
-7930 cells × 23686 genes
-
-
-
-Filtered Matrix
-
-7930 cells × 22197 genes
-
-Saved as:
-
-
-
-data/processed/gbm\_filtered.h5ad
-
-Highly Variable Gene (HVG) Selection
-
-Purpose
-
-Reduce computational complexity
-
-Retain most informative genes
-
-Speed up GRN inference
-
-Method
-
-sc.pp.highly\_variable\_genes(
-
-&#x20;   adata,
-
-&#x20;   n\_top\_genes=5000
-
-)
-
-Result
-
-7930 cells × 5000 genes
-
-Saved files:
-
-
-
-data/processed/gbm\_hvg\_5000.h5ad
-
-data/processed/gbm\_hvg\_5000.tsv
-
-SCENIC Resources
-
-1\. Human Transcription Factor List
-
-File:
-
-
-
-allTFs\_hg38.txt
-
-Download:
-
-
-
-https://resources.aertslab.org/cistarget/tf\_lists/allTFs\_hg38.txt
-
-
-
-Purpose:
-
-
-
-Provides a curated list of human transcription factors
-
-Restricts GRNBoost2 to biologically meaningful regulators
-
-Reduces computational complexity
-
-Statistics:
-
-
-
-Total TFs in database : 1892
-
-TFs present in GBM dataset : 364
-
-2\. Motif Annotation Database
-
-File:
-
-
-
-motifs-v10nr\_clust-nr.hgnc-m0.001-o0.0.tbl
-
-Download:
-
-
-
-https://resources.aertslab.org/cistarget/
-
-
-
-Purpose:
-
-
-
-Maps transcription factors to their DNA-binding motifs
-
-Used during the cisTarget motif enrichment step
-
-Helps validate TF-target interactions
-
-3\. cisTarget Ranking Database
-
-File:
-
-
-
-hg38\_\_refseq-r80\_\_10kb\_up\_and\_down\_tss.mc9nr.genes\_vs\_motifs.rankings.feather
-
-Download:
-
-
-
-https://resources.aertslab.org/cistarget/databases/
-
-
-
-Purpose:
-
-
-
-Human genome motif-ranking database
-
-Used by cisTarget to identify motif enrichment
-
-Converts co-expression relationships into biologically supported regulatory interactions
-
-Genome:
-
-
-
-Species : Homo sapiens
-
-Assembly : hg38
-
-Region : ±10 kb around transcription start sites
-
-SCENIC Workflow
-
-Step 1: Expression Matrix
-
-Input:
-
-
-
-7930 cells × 5000 genes
-
-Step 2: GRNBoost2 Network Inference
-
-Input:
-
-
-
-gbm\_hvg\_5000.tsv
-
-present\_TFs.txt
-
-Goal:
-
-
-
-Infer TF → Target Gene relationships
-
-Command:
-
-
-
-pyscenic grn data/processed/gbm\_hvg\_5000.tsv resources/present\_TFs.txt -o results/grnboost2/grnboost2\_network.csv --num\_workers 8
-
-Current Status:
-
-
-
-RUNNING
-
-Hardware:
-
-
-
-CPU Cores : 20
-
-RAM : 16 GB
-
-Workers : 8
-
-Step 3: cisTarget (Planned)
-
-Input:
-
-
-
-grnboost2\_network.csv
-
-motifs-v10nr\_clust-nr.hgnc-m0.001-o0.0.tbl
-
-hg38\_\_refseq-r80\_\_10kb\_up\_and\_down\_tss.mc9nr.genes\_vs\_motifs.rankings.feather
-
-Output:
-
-
-
-Regulons
-
-Purpose:
-
-
-
-Validate predicted TF-target interactions using motif enrichment analysis.
-
-Step 4: AUCell (Planned)
-
-Input:
-
-
-
-Regulons
-
-Expression Matrix
-
-Output:
-
-
-
-Regulon Activity Scores
-
-Purpose:
-
-
-
-Determine transcription factor activity across individual glioblastoma cells.
-
-Expected Biological Findings
-
-Potential transcription factors expected to be identified:
-
-
-
-SOX2
-
-OLIG2
-
-STAT3
-
-MYC
-
-NFIA
-
-NFIB
-
-JUN
-
-FOS
-
-SOX4
-
-WT1
-
-Potential biological processes:
-
-
-
-Glioblastoma stemness
-
-Cellular plasticity
-
-Tumor progression
-
-Cell proliferation
-
-Differentiation programs
-
-Regulatory network rewiring
-
-Progress Summary
-
-✅ GitHub repository created
-
-
-
-✅ Conda environment created
-
-
-
-✅ Dataset downloaded
-
-
-
-✅ Dataset inspected
-
-
-
-✅ AnnData object created
-
-
-
-✅ Gene filtering completed
-
-
-
-✅ Highly variable genes selected
-
-
-
-✅ Expression matrix exported
-
-
-
-✅ Human TFs extracted
-
-
-
-✅ SCENIC resources downloaded
-
-
-
-✅ pySCENIC configured
-
-
-
-✅ GRNBoost2 started
-
-
-
-🔄 GRNBoost2 running
-
-
-
-⏳ cisTarget pending
-
-
-
-⏳ AUCell pending
-
-
-
-⏳ Biological interpretation pending
-
+├── environment.yml
+├── data/
+│   ├── raw/                 
+│   └── processed/
+├── resources/
+│   ├── tf_lists/
+│   ├── databases/
+│   └── annotations/
+├── scripts/
+│   ├── download_data.py
+│   └── preprocessing.py
+└── results/
+    ├── grnboost2/
+    ├── regulons/
+    └── aucell/
+Citation
+If you use this workflow or interpret the results in a report, cite Aibar et al. (2017) for SCENIC and Neftel et al. (2019) for the glioblastoma dataset and cellular-state framework.
