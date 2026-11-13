@@ -1,5 +1,3 @@
-Identification and Analysis of Transcription Factor Regulatory Networks in Glioblastoma Using SCENIC
-Project overview
 This project applies the SCENIC workflow to a single-cell RNA-sequencing expression matrix derived from the glioblastoma dataset GSE131928 to infer candidate transcription factor (TF)-target regulatory relationships and assess regulon activity across cells.
 
 The analysis is intended to investigate transcriptional regulatory programmes associated with glioblastoma cellular heterogeneity.
