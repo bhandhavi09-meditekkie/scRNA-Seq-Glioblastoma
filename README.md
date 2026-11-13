@@ -1,46 +1,50 @@
 This project applies the SCENIC workflow to a single-cell RNA-sequencing expression matrix derived from the glioblastoma dataset GSE131928 to infer candidate transcription factor (TF)-target regulatory relationships and assess regulon activity across cells.
 
 The analysis is intended to investigate transcriptional regulatory programmes associated with glioblastoma cellular heterogeneity.
-Research question
+
+Research question:
 Can transcription-factor regulatory network inference from single-cell RNA-sequencing data identify candidate regulatory programmes that may help characterise cellular heterogeneity in glioblastoma?
-Dataset
+
+Dataset:
 - Dataset: GSE131928
 - Study: Neftel et al. (2019), An Integrative Model of Cellular States, Plasticity, and Genetics for Glioblastoma
 - GEO record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131928
 - Expression matrix used in this project: gbm_expression_matrix.tsv
 - Reported matrix dimensions: 7,930 cells × 22,197 genes
 - Important: This is the project’s selected subset/matrix, not the full cell count of the original GEO study.
-Workflow
+
+Workflow:
 1. Prepare the gene-expression matrix and select highly variable genes (HVGs).
 2. Infer candidate TF-target relationships using GRNBoost2.
 3. Refine candidate regulons using cisTarget motif-enrichment analysis.
 4. Calculate regulon activity across cells using AUCell.
 5. Rank and biologically interpret selected TF-labelled entries using relevant literature.
-SCENIC stages
+
+SCENIC stages:
 - GRNBoost2: Infers candidate TF-target relationships from expression patterns.
 - cisTarget: Uses motif enrichment to refine candidate TF-target relationships into regulons.
 - AUCell: Estimates the enrichment/activity of regulon target genes among highly expressed genes in individual cells.
 These are computational inferences. Motif enrichment and AUCell scores do not, by themselves, prove direct TF binding or causal regulation.
-Environment Setup and Troubleshooting
-Cross-Platform Environment Configuration
 
+Environment Setup and Troubleshooting:
+Cross-Platform Environment Configuration:
 During the implementation of this project, environment compatibility issues were encountered while setting up and executing the pySCENIC workflow. The installation and execution of the required dependencies involved troubleshooting Python packages, their versions, and platform-specific compatibility.
 
 To address these issues, both Linux and Windows environments were used during the project.
 -Linux:Used for configuring the computational environment and executing the pySCENIC workflow, particularly for command-line-based processing.
 -Windows: Used alongside Linux to troubleshoot installation and dependency-related issues and to support the overall project workflow.
 
-Challenges Encountered
+Challenges Encountered:
 The main challenges involved:
 1. Dependency compatibility: Installing and configuring the Python packages required by pySCENIC.
 2. Environment configuration:Managing the required libraries and their dependencies to ensure compatibility.
 3. Cross-platform execution:Working across Linux and Windows to troubleshoot environment-specific issues and get the workflow running.
 4. Workflow execution:Ensuring that the GRNBoost2, cisTarget, and AUCell stages could be executed successfully with the configured environment.
 
-Resolution
+Resolution:
 The environment issues were addressed through iterative troubleshooting and the use of both Linux and Windows. After configuring the required dependencies and resolving the execution issues, the pySCENIC workflow was successfully run to infer candidate gene regulatory networks and estimate regulon activity in the glioblastoma single-cell RNA-sequencing dataset.
 
-Reported results
+Reported results:
 The following 20 TF-labelled entries and scores were reported:
 TF-labelled entry	Reported score
 SOX4(+)	0.173455
@@ -65,7 +69,7 @@ GLI1(+)	0.042237
 ZNF782(+)	0.041086
 
 
-Preliminary interpretation
+Preliminary interpretation:
 SOX4 and HES6 have the two highest reported scores. SOX4 is particularly interesting in light of the GBM cellular-state framework described by Neftel et al. (2019), which includes neural progenitor-like (NPC-like) malignant cell states. HES6 has also been investigated in glioma proliferation.
 
 Other TFs suggest hypotheses for further investigation:
@@ -102,19 +106,8 @@ pyscenic aucell \
   --output results/aucell/aucell_scores.csv \
   --num_workers 2
 Check pyscenic grn --help, pyscenic ctx --help, and pyscenic aucell --help for syntax supported by the installed pySCENIC version. The TF list and database must match the organism/genome build and gene identifiers in the expression matrix.
-Resources
-- SCENIC paper: Aibar et al. (2017), SCENIC: single-cell regulatory network inference and clustering. https://doi.org/10.1038/nmeth.4463
-- Glioblastoma dataset paper: Neftel et al. (2019), An Integrative Model of Cellular States, Plasticity, and Genetics for Glioblastoma. https://doi.org/10.1016/j.cell.2019.06.024
-- GEO dataset: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131928
-- cisTarget resources: https://resources.aertslab.org/cistarget/
-- Human TF list: https://resources.aertslab.org/cistarget/tf_lists/allTFs_hg38.txt
-Limitations and next steps
-1. Record the exact origin and meaning of the reported score column.
-2. Examine regulon target-gene counts and the target genes for the top TFs.
-3. Map AUCell activity to cell-type and malignant-cell-state annotations.
-4. Check whether immune-associated TFs (for example, MAFB, STAT1 and IRF1) arise from non-malignant populations.
 
-Suggested repository structure
+Repository structure:
 project/
 ├── README.md
 ├── environment.yml
@@ -132,5 +125,19 @@ project/
     ├── grnboost2/
     ├── regulons/
     └── aucell/
+Resources:
+- SCENIC paper: Aibar et al. (2017), SCENIC: single-cell regulatory network inference and clustering. https://doi.org/10.1038/nmeth.4463
+- Glioblastoma dataset paper: Neftel et al. (2019), An Integrative Model of Cellular States, Plasticity, and Genetics for Glioblastoma. https://doi.org/10.1016/j.cell.2019.06.024
+- GEO dataset: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131928
+- cisTarget resources: https://resources.aertslab.org/cistarget/
+- Human TF list: https://resources.aertslab.org/cistarget/tf_lists/allTFs_hg38.txt
+
+Limitations and next steps:
+1. Record the exact origin and meaning of the reported score column.
+2. Examine regulon target-gene counts and the target genes for the top TFs.
+3. Map AUCell activity to cell-type and malignant-cell-state annotations.
+4. Check whether immune-associated TFs (for example, MAFB, STAT1 and IRF1) arise from non-malignant populations
+
+
 Citation
 If you use this workflow or interpret the results in a report, cite Aibar et al. (2017) for SCENIC and Neftel et al. (2019) for the glioblastoma dataset and cellular-state framework.
