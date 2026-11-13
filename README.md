@@ -48,7 +48,6 @@ GLI1(+)	0.042237
 ZNF782(+)	0.041086
 
 
-Score-metric caveat: The source file and column name for this score list must be recorded before interpreting the values as AUCell activity, regulon specificity, GRNBoost2 importance, or another metric.
 Preliminary interpretation
 SOX4 and HES6 have the two highest reported scores. SOX4 is particularly interesting in light of the GBM cellular-state framework described by Neftel et al. (2019), which includes neural progenitor-like (NPC-like) malignant cell states. HES6 has also been investigated in glioma proliferation.
 
