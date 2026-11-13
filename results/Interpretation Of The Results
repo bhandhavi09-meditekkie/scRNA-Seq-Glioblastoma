@@ -1,0 +1,30 @@
+The SCENIC analysis identified 20 TF-labelled entries, with SOX4 (0.173455), HES6 (0.141375), NFIL3 (0.085255), MAFB (0.075977) and JUN (0.073063) occupying the top five positions.
+1. SOX4 – Neural progenitor-like cell identity
+- SOX4 was the highest-ranked TF in your results.
+- Neftel et al. (2019) identified SOX4 as a marker associated with the neural progenitor-like (NPC-like) state in glioblastoma.
+- This suggests a possible relationship between your result and the neural progenitor-like characteristics of GBM cells.
+https://www.cell.com/cell/fulltext/S0092-8674(19)30687-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867419306877%3Fshowall%3Dtrue
+2. HES6 – Glioma proliferation
+- HES6 was the second-highest-ranked TF.
+- Haapa-Paananen et al. (2012) reported that HES6 is overexpressed in glioma and contributes to glioma-cell survival, proliferation and migration.
+- Its identification alongside SOX4 makes neural developmental and progenitor-associated regulatory programmes particularly interesting to investigate.
+https://www.nature.com/articles/onc2011316
+3.DLX5 – Neural developmental regulation
+- DLX5 is another TF identified in your results (score: 0.053173).
+- It is associated with neural developmental programmes and has been included among genes characterising the NPC-like 2 state in GBM cell-state studies.
+- This provides an interesting connection with SOX4: both are associated with neural progenitor-like characteristics in glioblastoma, although their identification does not prove that they directly regulate each other.
+https://www.cell.com/cell/fulltext/S0092-8674(19)30687-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867419306877%3Fshowall%3Dtrue
+4. MAFB – Immune microenvironment
+- MAFB was ranked fourth in your results.
+- MAFB is associated with myeloid-cell differentiation and macrophage biology.
+- Its identification raises the possibility that your inferred regulatory network captures immune-cell-associated activity within the GBM microenvironment, rather than exclusively tumour-cell regulation.
+https://link.springer.com/article/10.1186/s13148-023-01446-4
+5.JUN – Tumour-associated transcriptional regulation
+- JUN (c-Jun) was ranked fifth in your results.
+- Roura et al. (2023) demonstrated that c-Jun regulates genes associated with glioblastoma growth and invasion, including VIM and FOSL2.
+- This suggests that JUN may represent a regulatory programme associated with tumour adaptation and invasive behaviour.
+https://pubmed.ncbi.nlm.nih.gov/42374253/
+
+All these findings indicate that SCENIC has successfully helped us identify candidate transcription factors and infer their associated regulatory networks from the glioblastoma single-cell RNA-sequencing dataset. 
+The analysis identified 20 TF-labelled entries, with SOX4 and HES6 emerging as the highest-scoring candidates. 
+The identification of biologically relevant TFs, including SOX4, JUN, MAFB and DLX5, further supports the biological relevance of the inferred results.
