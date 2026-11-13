@@ -29,8 +29,8 @@ and motif annotation file:
 motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl.txt
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Results reported from thie analysis
-The project reported the following 20 TF-labelled entries and associated scores:
+Results:
+The 20 TF-labelled entries and associated scores:
 TF	Reported score
 SOX4(+)	0.173455
 HES6(+)	0.141375
@@ -53,7 +53,7 @@ EPAS1(+)	0.043626
 GLI1(+)	0.042237
 ZNF782(+)	0.041086
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Interpretation
+Interpretation:
 SOX4 and HES6 have the highest reported scores in this list, followed by NFIL3, MAFB, JUN and STAT1. These are candidate regulators prioritised for follow-up in this dataset, not experimentally proven glioblastoma drivers.
 
 The TFs suggest several hypotheses for biological investigation:
@@ -62,9 +62,8 @@ The TFs suggest several hypotheses for biological investigation:
 - Immune/inflammatory or microenvironment-associated programmes: STAT1, IRF1, NFIL3 and MAFB.
 - Hypoxia/developmental signalling: EPAS1 and GLI1.
 These groupings are literature-informed hypotheses. In a mixed tumour single-cell dataset, a TF may arise from malignant cells, macrophages, lymphocytes, endothelial cells or other populations. Cell-type annotations and per-cell regulon activity are required before assigning a TF to a malignant-cell state.
-
-A high score is not automatically equivalent to high TF expression, causal activity, prognostic value or tumour specificity. Interpret the score according to its exact definition.
-Limitations
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Limitations:
 1. SCENIC infers candidate regulatory relationships computationally; motif enrichment does not prove TF binding in the analysed cells.
 2. Co-expression and motif support do not establish causality.
 3. The reported TF score metric needs to be explicitly identified from the output-generation step.
@@ -72,13 +71,13 @@ Limitations
 5. Cell-type attribution requires metadata/annotation and per-cell activity analysis.
 6. A direct comparison against expression-based clustering has not been performed, so this project does not claim improved classification accuracy.
 7. Experimental validation (for example, perturbation, ChIP-seq/CUT&RUN, or independent cohort validation) would be needed to establish causal regulatory roles.
-Conclusion
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Conclusion:
 This project applies SCENIC to a glioblastoma single-cell dataset different from the datasets used in the original SCENIC publication. The workflow uses GRNBoost2 for candidate network inference, cisTarget for motif-based regulon pruning and AUCell for cell-wise regulon activity scoring. The reported candidate list prioritises SOX4, HES6 and other transcription factors for further biological investigation.
-
-The main contribution is the application and interpretation of a regulatory-network method in a disease-specific dataset. The results provide hypotheses about glioblastoma-associated regulatory programmes; they do not constitute experimental proof of TF function or a benchmark showing superior cell classification.
-References
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+The main contribution is the application and interpretation of a regulatory-network method in a disease-specific dataset. The results provide hypotheses about glioblastoma-associated regulatory network.
+References:
 1. Aibar, S. et al. (2017). SCENIC: single-cell regulatory network inference and clustering. Nature Methods, 14, 1083–1086. https://doi.org/10.1038/nmeth.4463
 2. Neftel, C. et al. (2019). An Integrative Model of Cellular States, Plasticity, and Genetics for Glioblastoma. Cell, 178(4), 835–849.e21. https://doi.org/10.1016/j.cell.2019.06.024
-3. GEO accession GSE131928. https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131928
-4. pySCENIC documentation. https://pyscenic.readthedocs.io/
-5. cisTarget resources. https://resources.aertslab.org/cistarget/
+3. pySCENIC documentation. https://pyscenic.readthedocs.io/
+
