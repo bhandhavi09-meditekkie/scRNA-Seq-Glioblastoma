@@ -23,6 +23,25 @@ SCENIC stages
 - cisTarget: Uses motif enrichment to refine candidate TF-target relationships into regulons.
 - AUCell: Estimates the enrichment/activity of regulon target genes among highly expressed genes in individual cells.
 These are computational inferences. Motif enrichment and AUCell scores do not, by themselves, prove direct TF binding or causal regulation.
+Environment Setup and Troubleshooting
+Cross-Platform Environment Configuration
+
+During the implementation of this project, environment compatibility issues were encountered while setting up and executing the pySCENIC workflow. The installation and execution of the required dependencies involved troubleshooting Python packages, their versions, and platform-specific compatibility.
+
+To address these issues, both Linux and Windows environments were used during the project.
+-Linux:Used for configuring the computational environment and executing the pySCENIC workflow, particularly for command-line-based processing.
+-Windows: Used alongside Linux to troubleshoot installation and dependency-related issues and to support the overall project workflow.
+
+Challenges Encountered
+The main challenges involved:
+1. Dependency compatibility: Installing and configuring the Python packages required by pySCENIC.
+2. Environment configuration:Managing the required libraries and their dependencies to ensure compatibility.
+3. Cross-platform execution:Working across Linux and Windows to troubleshoot environment-specific issues and get the workflow running.
+4. Workflow execution:Ensuring that the GRNBoost2, cisTarget, and AUCell stages could be executed successfully with the configured environment.
+
+Resolution
+The environment issues were addressed through iterative troubleshooting and the use of both Linux and Windows. After configuring the required dependencies and resolving the execution issues, the pySCENIC workflow was successfully run to infer candidate gene regulatory networks and estimate regulon activity in the glioblastoma single-cell RNA-sequencing dataset.
+
 Reported results
 The following 20 TF-labelled entries and scores were reported:
 TF-labelled entry	Reported score
